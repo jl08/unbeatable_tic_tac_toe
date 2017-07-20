@@ -20,11 +20,34 @@ class Board
     formatted_board.join("")
   end
 
+  def has_empty_slot_under?(position)
+
+    if position > 5
+      return false
+    end
+
+    if position < 6
+      tile_right_below = @grid[position + 3]
+      if tile_right_below.nil?
+        return true
+      end
+      if position < 3
+        next_tile_below = @grid[position + 6]
+        # binding.pry
+
+        if next_tile_below.nil?
+          return true
+        end
+      end
+    end
+    false
+  end
+
   def has_row_match?(marker)
     if marker.nil?
       return false
     end
-    first_column   = [0,3,6]
+    first_column = [0,3,6]
     three_in_a_row = false
     first_column.each do |row_index|
       if @grid[row_index] == marker && @grid[row_index + 1] == marker && @grid[row_index + 2] == marker
@@ -36,7 +59,7 @@ class Board
   end
 
   def has_vertical_match?(marker)
-    first_row         = [0,1,2]
+    first_row = [0,1,2]
     three_in_a_column = false
     first_row.each do |col_index|
       if @grid[col_index] == marker && @grid[col_index + 3] == marker && @grid[col_index + 6] == marker
@@ -51,21 +74,14 @@ class Board
     if @grid[0] == marker && @grid[0] == @grid[4] && @grid[0] == @grid[8]
       return true
     end
-    return false
+    false
   end
 
   def has_other_diagonal_match?(marker)
     if @grid[2] == marker && @grid[2] == @grid[4] && @grid[2] == @grid[6]
       return true
     end
-    return false
-  end
-
-  def has_winner?
-    if is_winner?("X") == true || is_winner?("O") == true
-      return true
-    end
-    return false
+    false
   end
 
   def is_full?
@@ -76,13 +92,13 @@ class Board
     if has_row_match?(marker) || has_vertical_match?(marker) || has_diagonal_match?(marker) || has_other_diagonal_match?(marker)
       return true
     end
-    return false
+    false
   end
 
   def remaining_options
     options = []
     @grid.each_with_index do |tile, position|
-      if tile.nil?
+      if tile.nil? && valid_placement?(position)
         options << position
       end
     end
@@ -95,7 +111,17 @@ class Board
 
   def update(position, marker)
     if !position.nil?
+      puts @grid[position.to_i]
      @grid[position.to_i] = marker
    end
   end
+
+  def valid_placement?(position)
+    if has_empty_slot_under?(position)
+      return false
+    end
+    true
+  end
+
+
 end
