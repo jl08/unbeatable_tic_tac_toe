@@ -59,7 +59,6 @@ RSpec.describe Board do
         expect(x_row_win.has_vertical_match?(x_marker)).to eq false
       end
     end
-
     context "when three X vertical" do
       it "returns true" do
         expect(x_vertical_win.has_vertical_match?(x_marker)).to eq true
@@ -81,7 +80,6 @@ RSpec.describe Board do
         expect(x_row_win.has_diagonal_match?(x_marker)).to eq false
       end
     end
-
     context "when three X diagonal" do
       it "returns true" do
         expect(x_diagonal_win.has_diagonal_match?(x_marker)).to eq true
@@ -95,7 +93,6 @@ RSpec.describe Board do
         expect(x_row_win.has_other_diagonal_match?(x_marker)).to eq false
       end
     end
-
     context "when three X other diagonal" do
       it "returns true" do
         expect(x_other_diagonal_win.has_other_diagonal_match?(x_marker)).to eq true
@@ -140,7 +137,7 @@ RSpec.describe Board do
     end
   end
 
-  describe "remaining_options" do
+  describe "#remaining_options" do
     context "when board has spots 0, 1, 2, 3 open" do
       it "returns [0, 1, 2, 3]" do
         expect(unfinished_board.remaining_options).to eq [0,1,2,3]
@@ -151,7 +148,26 @@ RSpec.describe Board do
         end
       end
     end
+    context "when board is full" do
+      it "returns empty array" do
+        expect(tie_board.remaining_options).to eq []
+      end
+    end
+  end
 
+  describe "#update" do
+    context "when board is empty" do
+      it "should return board grid with marker on indicated position" do
+        default_board.update(1, x_marker)
+        expect(default_board.grid).to eq [nil,"X",nil,nil,nil,nil,nil,nil,nil]
+      end
+      context "when board is full" do
+        it "should have same grid as before update" do
+          tie_board.update(1, o_marker)
+          expect(tie_board.grid).to eq no_winners_board
+        end
+      end
+    end
     context "when board is full" do
       it "returns empty array" do
         expect(tie_board.remaining_options).to eq []

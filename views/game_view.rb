@@ -1,7 +1,20 @@
 class GameView
 
   def display_board(board)
-    puts board.formatted_display
+    puts "---"
+    formatted_board = board.grid.map.with_index do |cell, index|
+      cell_display = cell
+      if cell_display.nil?
+        cell_display = index
+      end
+      if index == 2 || index == 5 || index == 8
+        cell_display.to_s + "\n"
+      else
+        cell_display.to_s
+      end
+    end
+    puts formatted_board.join("")
+    puts "---"
   end
 
   def display_instructions
@@ -22,11 +35,9 @@ class GameView
 
   def get_game_option
     user_choice = gets.chomp.to_i
-    if ![1,2,3].include?(user_choice)
+    until [1,2,3].include?(user_choice) do
       puts "Invalid choice. Please try again."
-      until [1,2,3].include?(user_choice) do
-        user_choice = get_game_option
-      end
+      user_choice = get_game_option
     end
     user_choice
   end

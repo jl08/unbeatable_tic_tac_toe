@@ -1,5 +1,6 @@
 require_relative '../views/player_view'
 require_relative './ai'
+
 class Player
 attr_reader :marker
 

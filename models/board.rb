@@ -5,21 +5,6 @@ class Board
     @grid =  board || Array.new(9)
   end
 
-  def formatted_display
-    formatted_board = @grid.map.with_index do |cell, index|
-      cell_display = cell
-      if cell_display.nil?
-        cell_display = index
-      end
-      if index == 2 || index == 5 || index == 8
-        cell_display.to_s + "\n"
-      else
-        cell_display.to_s
-      end
-    end
-    formatted_board.join("")
-  end
-
   def has_row_match?(marker)
     first_column = [0,3,6]
     has_three_consecutive_match?(marker,first_column,1,2)
@@ -33,7 +18,7 @@ class Board
   def has_three_consecutive_match?(marker,tiles_to_check, second_tile_index_incrementor, third_tile_index_incrementor )
     three_matching = false
     tiles_to_check.each do |tile|
-      if @grid[tile] == marker && @grid[tile + second_tile_index_incrementor] == marker && @grid[tile + third_tile_index_incrementor] == marker
+      if grid[tile] == marker && grid[tile + second_tile_index_incrementor] == marker && grid[tile + third_tile_index_incrementor] == marker
         three_matching = true
         break
       end
@@ -42,21 +27,21 @@ class Board
   end
 
   def has_diagonal_match?(marker)
-    if @grid[0] == marker && @grid[0] == @grid[4] && @grid[0] == @grid[8]
+    if grid[0] == marker && grid[0] == grid[4] && grid[0] == grid[8]
       return true
     end
     false
   end
 
   def has_other_diagonal_match?(marker)
-    if @grid[2] == marker && @grid[2] == @grid[4] && @grid[2] == @grid[6]
+    if grid[2] == marker && grid[2] == grid[4] && grid[2] == grid[6]
       return true
     end
     false
   end
 
   def is_full?
-    !@grid.include?(nil)
+    !grid.include?(nil)
   end
 
   def is_winner?(marker)
@@ -71,27 +56,18 @@ class Board
 
   def remaining_options
     options = []
-    @grid.each_with_index do |tile, position|
-      if tile.nil? && valid_placement?(position)
+    grid.each_with_index do |tile, position|
+      if tile.nil?
         options << position
       end
     end
     options
   end
 
-  def to_s
-    @grid.to_s
-  end
-
   def update(position, marker)
     if !position.nil?
-     @grid[position.to_i] = marker
+     grid[position.to_i] = marker
    end
   end
-
-  def valid_placement?(position)
-    true
-  end
-
 
 end

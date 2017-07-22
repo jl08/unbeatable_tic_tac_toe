@@ -15,11 +15,8 @@ RSpec.describe Player do
   let(:no_winners_board) { [o_marker,x_marker,o_marker,x_marker,x_marker,o_marker,x_marker,o_marker,x_marker] }
   let(:tie_board) { Board.new(no_winners_board) }
 
-
-
   let(:player1) { Player.new(x_marker) }
   let(:player2) { Player.new(o_marker) }
-
 
   describe "#make_move" do
     context "when board is empty" do

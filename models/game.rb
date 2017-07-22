@@ -58,4 +58,5 @@ class Game
   def get_selected_game
     @view.get_game_option
   end
+  
 end
