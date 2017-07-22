@@ -10,36 +10,45 @@ class Game
     @view = GameView.new()
   end
 
+  def end
+    @view.display_winner(get_winner)
+  end
+
   def get_winner
-    if @board.is_winner?(@player1.marker)
-      return @player1
-    elsif @board.is_winner?(@player2.marker)
-      return @player2
-    else
-      return nil
+    if board.is_winner?(player1.marker)
+      return player1
+    elsif board.is_winner?(player2.marker)
+      return player2
     end
   end
 
   def has_winner?
-    if @board.is_winner?(@player1.marker) || @board.is_winner?(@player2.marker)
+    if board.is_winner?(player1.marker) || board.is_winner?(player2.marker)
       return true
     end
     false
   end
 
   def over?
-    @board.is_full? || has_winner?
+    board.is_full? || has_winner?
+  end
+
+  def play_round(player, opposing_marker)
+    player_move = player.make_move(board, player.marker, opposing_marker)
+    board.update(player_move, player.marker)
+    @view.display_board(board)
   end
 
   def run
-    player1_move = @player1.make_move(@board, @player1.marker, @player2.marker)
-    @board.update(player1_move, @player1.marker)
-    @view.display_board(@board)
+    @view.display_board(board)
+    play_round(player1, player2.marker)
     if !over?
-      player2_move = @player2.make_move(@board,@player2.marker, @player1.marker)
-      @board.update(player2_move, @player2.marker)
-      @view.display_board(@board)
+      play_round(player2, player1.marker)
     end
+  end
+
+  def show_instructions
+    @view.display_instructions
   end
 
   def start

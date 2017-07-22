@@ -1,20 +1,14 @@
 class PlayerView
 
-  def initialize
-  end
-
-
-  def get_move(options)
+  def get_move(options, marker)
+    puts marker + " turn"
     move = gets.chomp.to_i
     if !options.include?(move)
-      puts "Not a valid spot. Please try again"
       until options.include?(move) do
+        puts "Not a valid spot. Please try again"
         move = gets.chomp.to_i
       end
     end
-    puts "get_move"
-    puts "move"
-    puts move
     move
   end
 

@@ -8,36 +8,28 @@ class TicTacToeController
     game  = Game.new()
     game.start
     user_choice = game.get_selected_game
-
     player1_marker = "X"
     player2_marker = "O"
 
     human_player = "human"
 
     if user_choice == 1
-      player1 = Player.new(player1_marker, human_player)
-      player2 = Player.new(player2_marker, human_player)
+      game.player1 = Player.new(player1_marker, human_player)
+      game.player2 = Player.new(player2_marker, human_player)
     elsif user_choice == 2
-      player1 = Player.new(player1_marker, human_player)
-      player2 = Player.new(player2_marker)
+      game.player1 = Player.new(player1_marker, human_player)
+      game.player2 = Player.new(player2_marker)
     else
-      player1 = Player.new(player1_marker)
-      player2 = Player.new(player2_marker, human_player)
+      game.player1 = Player.new(player1_marker)
+      game.player2 = Player.new(player2_marker, human_player)
     end
 
-    board = Board.new()
-    game.player1 = player1
-    game.player2 = player2
-    game.board = board
+    game.board = Board.new()
+    game.show_instructions
     until game.over?
       game.run
     end
-    if game.has_winner?
-      puts "board has winner!"
-    else
-      puts "No one wins. :["
-    end
-
+    game.end
   end
 
 end

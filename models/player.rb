@@ -11,15 +11,9 @@ attr_reader :marker
 
   def make_move(board, marker, opposing_marker)
     if @type == "ai"
-      move = AI.make_move(board, marker, opposing_marker)
+      move = AI.make_move(board.grid, board.remaining_options, marker, opposing_marker)
     else
-      move = @view.get_move(board.remaining_options)
-      # if !board.valid_placement?(move)
-      #   until board.valid_placement?(move)
-      #     puts "Not a valid spot! Try again."
-      #     move = @view.get_move
-      #   end
-      # end
+      move = @view.get_move(board.remaining_options, marker)
     end
     move
   end

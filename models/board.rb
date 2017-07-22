@@ -20,54 +20,25 @@ class Board
     formatted_board.join("")
   end
 
-  def has_empty_slot_under?(position)
-
-    if position > 5
-      return false
-    end
-
-    if position < 6
-      tile_right_below = @grid[position + 3]
-      if tile_right_below.nil?
-        return true
-      end
-      if position < 3
-        next_tile_below = @grid[position + 6]
-        # binding.pry
-
-        if next_tile_below.nil?
-          return true
-        end
-      end
-    end
-    false
-  end
-
   def has_row_match?(marker)
-    if marker.nil?
-      return false
-    end
     first_column = [0,3,6]
-    three_in_a_row = false
-    first_column.each do |row_index|
-      if @grid[row_index] == marker && @grid[row_index + 1] == marker && @grid[row_index + 2] == marker
-        three_in_a_row = true
-        break
-      end
-    end
-    three_in_a_row
+    has_three_consecutive_match?(marker,first_column,1,2)
   end
 
   def has_vertical_match?(marker)
     first_row = [0,1,2]
-    three_in_a_column = false
-    first_row.each do |col_index|
-      if @grid[col_index] == marker && @grid[col_index + 3] == marker && @grid[col_index + 6] == marker
-        three_in_a_column = true
+    has_three_consecutive_match?(marker,first_row,3,6)
+  end
+
+  def has_three_consecutive_match?(marker,tiles_to_check, second_tile_index_incrementor, third_tile_index_incrementor )
+    three_matching = false
+    tiles_to_check.each do |tile|
+      if @grid[tile] == marker && @grid[tile + second_tile_index_incrementor] == marker && @grid[tile + third_tile_index_incrementor] == marker
+        three_matching = true
         break
       end
     end
-    three_in_a_column
+    three_matching
   end
 
   def has_diagonal_match?(marker)
@@ -89,6 +60,9 @@ class Board
   end
 
   def is_winner?(marker)
+    if marker.nil?
+      return false
+    end
     if has_row_match?(marker) || has_vertical_match?(marker) || has_diagonal_match?(marker) || has_other_diagonal_match?(marker)
       return true
     end
@@ -111,15 +85,11 @@ class Board
 
   def update(position, marker)
     if !position.nil?
-      puts @grid[position.to_i]
      @grid[position.to_i] = marker
    end
   end
 
   def valid_placement?(position)
-    if has_empty_slot_under?(position)
-      return false
-    end
     true
   end
 
